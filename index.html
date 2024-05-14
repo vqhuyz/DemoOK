@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog-Z Bootstrap 5.0 HTML Template</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<!--
+    
+TemplateMo 556 Catalog-Z
+
+https://templatemo.com/tm-556-catalog-z
+
+-->
+</head>
+<body>
+
+    <div class="container-fluid tm-container-content tm-mt-60">
+        <div class="row mb-4">
+            <h2 class="col-6 tm-text-primary">
+            </h2>
+        </div>
+        <div id="addHtml" class="row tm-mb-90 tm-gallery">
+            </div>         
+        </div> <!-- row -->
+    </div> <!-- container-fluid, tm-container-content -->
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    
+    <script src="js/plugins.js"></script>
+    <script>
+        $(window).on("load", function() {
+            $('body').addClass('loaded');
+            $.ajax({
+                url: 'https://ta.bigo.tv/official_website/OInterfaceWeb/vedioList/5?fetchNum=99999',
+                type: 'GET',
+                success: function(res) {
+                    let data = res.data.data;
+                    if(data){
+                        let template = "";
+                        data.forEach(element => {
+                            let imgUser = element.cover_m ?? "img/people-2.jpg";
+                            let nameUser = element.nick_name ?? "User";
+                            template += `<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
+                            <figure class="effect-ming tm-video-item">
+                                <img src="${imgUser}" alt="Image" class="img-fluid">
+                                <figcaption class="d-flex align-items-center justify-content-center">
+                                    <h2>${nameUser}</h2>
+                                    <a onClick="openStream(${element.bigo_id})">Watch Live</a>
+                                </figcaption>                    
+                            </figure>
+                        </div>`
+                        });
+                        $("#addHtml").empty().append(template);
+                    }
+                }
+            })
+        });
+
+        function openStream(roomId){
+            window.open(`https://www.bigo.tv/vi/${roomId}`);
+        };            
+    </script>
+</body>
+</html>
