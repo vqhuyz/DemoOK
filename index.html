@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,14 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
     <link rel="stylesheet" href="css/templatemo-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/alt/video-js-cdn.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.0.2/videojs-contrib-hls.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
-<!--
+    <!--
     
 TemplateMo 556 Catalog-Z
 
@@ -19,6 +23,7 @@ https://templatemo.com/tm-556-catalog-z
 
 -->
 </head>
+
 <body>
 
     <div class="container-fluid tm-container-content tm-mt-60">
@@ -27,40 +32,40 @@ https://templatemo.com/tm-556-catalog-z
             </h2>
         </div>
         <div id="addHtml" class="row tm-mb-90 tm-gallery">
-            </div>         
-        </div> <!-- row -->
+        </div>
+    </div> <!-- row -->
     </div> <!-- container-fluid, tm-container-content -->
 
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
-        
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-          
+
         </div>
-      </div>
-    
+    </div>
+
     <script src="js/plugins.js"></script>
+
     <script>
-        $(window).on("load", function() {
+        $(window).on("load", function () {
             $('body').addClass('loaded');
             $.ajax({
                 url: 'https://ta.bigo.tv/official_website/OInterfaceWeb/vedioList/5?fetchNum=99999',
                 type: 'GET',
-                success: function(res) {
+                success: function (res) {
                     let data = res.data.data;
-                    if(data){
+                    if (data) {
                         let template = "";
                         data.forEach(element => {
                             let imgUser = element.cover_m ?? "img/people-2.jpg";
@@ -81,9 +86,29 @@ https://templatemo.com/tm-556-catalog-z
             })
         });
 
-        function openStream(roomId){
-            window.open(`https://www.bigo.tv/vi/${roomId}`);
+        function openStream(roomId) {
+            $("#myModal").modal();
+            $.ajax({
+                url: 'https://ta.bigo.tv/official_website/studio/getInternalStudioInfo',
+                data: {
+                    'siteId': roomId
+                },
+                type: 'POST',
+                success: function (res) {
+                    let data = res.data
+                    let srcVid = data.hls_src
+                    let templateVid = `<video id="video" class="video-js vjs-default-skin" crossorigin="true" controls>
+                                            <source
+                                                src="${srcVid}"
+                                                type="application/x-mpegURL">
+                                        </video>`;
+                    $(".modal-body").empty().append(templateVid);
+                    var ply = videojs("video");
+                    ply.play();
+                }
+            })
         };            
     </script>
 </body>
+
 </html>
